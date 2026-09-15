@@ -1,16 +1,4 @@
--- =====================================================================
--- TALLER PRACTICO DE SQL - TECHSTORE
--- Ejercicios 1 al 10 (DDL, DML y DQL basico)
--- Motor: MySQL 8.0+
--- =====================================================================
 
-
--- =====================================================================
--- EJ. 01 - Construir la base
--- Consigna: crear la base de datos de TechStore y las tablas para
--- productos, clientes y ventas, con claves primarias y la tabla de
--- ventas referenciando a las otras dos.
--- =====================================================================
 
 CREATE DATABASE IF NOT EXISTS techstore;
 USE techstore;
