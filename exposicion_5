@@ -1,0 +1,67 @@
+CREATE DATABASE IF NOT EXISTS practica_db_simple;
+USE practica_db_simple;
+
+DROP TABLE IF EXISTS venta;
+DROP TABLE IF EXISTS producto;
+DROP TABLE IF EXISTS cliente;
+DROP TABLE IF EXISTS categoria;
+
+-- 1. Tabla Categoría
+CREATE TABLE IF NOT EXISTS categoria (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL
+);
+
+-- 2. Tabla Producto
+CREATE TABLE IF NOT EXISTS producto (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
+    categoria_id INT,
+    FOREIGN KEY (categoria_id) REFERENCES categoria(id)
+);
+
+-- 3. Tabla Cliente
+CREATE TABLE IF NOT EXISTS cliente (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL
+);
+
+-- 4. Tabla Venta (Simplificada: registra directamente un producto y cantidad por venta)
+CREATE TABLE IF NOT EXISTS venta (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    cliente_id INT NOT NULL,
+    producto_id INT NOT NULL,
+    cantidad INT NOT NULL,
+    fecha DATE DEFAULT (CURRENT_DATE),
+    FOREIGN KEY (cliente_id) REFERENCES cliente(id),
+    FOREIGN KEY (producto_id) REFERENCES producto(id)
+);
+
+-- INSERCIÓN DE DATOS SIMPLIFICADOS
+
+INSERT INTO categoria (nombre) VALUES 
+('Ropa'), 
+('Accesorios');
+
+INSERT INTO producto (nombre, precio, categoria_id) VALUES
+('Camiseta básica', 35000, 1),
+('Jean slim fit', 89000, 1),
+('Gorra negra', 25000, 2);
+
+INSERT INTO cliente (nombre) VALUES
+('Laura Gómez'),
+('Andrés Ríos');
+
+-- Registrar ventas de forma directa
+INSERT INTO venta (cliente_id, producto_id, cantidad, fecha) VALUES
+(1, 1, 2, '2026-09-05'), 
+(1, 3, 1, '2026-09-05'), 
+(2, 2, 1, '2026-09-08'); 
+
+-- CONSULTA SIMPLIFICADA
+SELECT p.nombre AS producto, v.cantidad, p.precio,
+       (v.cantidad * p.precio) AS subtotal
+FROM venta v
+JOIN producto p ON v.producto_id = p.id
+WHERE v.id = 1;
